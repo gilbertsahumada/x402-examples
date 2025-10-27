@@ -30,8 +30,8 @@ app.use(
   )
 );
 
-app.get("/weather", (_req, res) => {
-  res.send("Hello, World!");
+app.get("/", (_req, res) => {
+  res.send("Express Payment Server is running");
 });
 
 app.listen(PORT, () => {

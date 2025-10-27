@@ -30,6 +30,14 @@ app.use(
   )
 );
 
+app.get("/weather", (_req, res) => {
+  res.json({
+    location: "San Francisco",
+    temperature: "20°C",
+    condition: "Sunny",
+  });
+});
+
 app.get("/", (_req, res) => {
   res.send("Express Payment Server is running");
 });

@@ -6,7 +6,11 @@ import { Hex } from "viem";
 import { privateKeyToAccount } from "viem/accounts";
 import { withPaymentInterceptor } from "x402-axios";
 
-config();
+// Only load .env if environment variables are not already set
+// (Claude Desktop passes them via config, so we skip dotenv to avoid polluting stdio)
+if (!process.env.PRIVATE_KEY) {
+  config();
+}
 
 const privateKey = process.env.PRIVATE_KEY as Hex;
 const baseUrl = process.env.PAYMENT_SERVER_URL as string; // e.g., "https://payment-server.example.com"

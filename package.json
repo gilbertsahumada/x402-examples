@@ -1,9 +1,11 @@
 {
   "name": "mcp-x420",
   "version": "1.0.0",
-  "main": "index.js",
+  "type": "module",
   "scripts": {
-    "server": "tsx watch ./server.ts"
+    "server": "tsx watch ./server.ts",
+    "mcp": "tsx watch ./mcp.ts",
+    "mcp:prod": "tsx ./mcp.ts"
   },
   "author": "",
   "license": "ISC",

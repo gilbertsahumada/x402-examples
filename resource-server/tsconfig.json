@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
-    "target": "ES2022",
-    "module": "ES2022",
+    "target": "ES2020",
+    "module": "ES2020",
     "moduleResolution": "bundler",
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
@@ -11,5 +11,5 @@
     "baseUrl": ".",
     "types": ["node"]
   },
-  "include": ["mcp.ts", "server.ts"]
+  "include": ["index.ts"]
 }

@@ -1,0 +1,21 @@
+{
+  "name": "mcp-server",
+  "version": "1.0.0",
+  "type": "module",
+  "main": "mcp.ts",
+  "scripts": {
+    "dev": "tsx watch mcp.ts",
+    "start": "tsx mcp.ts"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.20.2",
+    "axios": "^1.12.2",
+    "dotenv": "^17.2.3",
+    "viem": "^2.38.4",
+    "x402-axios": "^0.6.6",
+    "zod": "^3.25.76"
+  },
+  "devDependencies": {
+    "tsx": "^4.20.6"
+  }
+}

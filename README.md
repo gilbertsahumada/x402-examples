@@ -1,62 +1,115 @@
-## 1. Instalar dependencias
+# MCP x402 - Micropayment Server Example
 
-```shell
-npm i @modelcontextprotocol/sdk axios dotenv viem x402-axios zod express tsx x402-express
+Este proyecto demuestra cómo implementar un servidor MCP (Model Context Protocol) que consume recursos protegidos con micropagos usando el protocolo x402.
+
+## Estructura del proyecto
+
+```
+mcp-x420/
+├── mcp-server/          # Servidor MCP que consume recursos pagados
+│   ├── mcp.ts
+│   ├── package.json
+│   ├── tsconfig.json
+│   └── .env.example
+└── resource-server/     # Servidor de recursos protegido con x402
+    ├── index.ts
+    ├── package.json
+    ├── tsconfig.json
+    └── .env.example
 ```
 
-## 2. Configurar variables de entorno
+## 1. Configurar el Resource Server
 
-Crea un archivo `.env` en la raíz del proyecto con los valores adecuados para tu entorno:
+### 1.1 Instalar dependencias
+
+```shell
+cd resource-server
+yarn install
+```
+
+### 1.2 Configurar variables de entorno
+
+Crea un archivo `.env` en `resource-server/` basado en `.env.example`:
 
 ```env
-FACILITATOR=<url del servidor facilitador>
-PAY_TO=<dirección del receptor en formato 0x>
-PRIVATE_KEY=<private key del wallet con USDC en Base Sepolia>
+FACILITATOR=https://facilitator.x402.org
+PAY_TO=0x... # Tu dirección de wallet para recibir pagos
+```
+
+### 1.3 Levantar el servidor
+
+```shell
+yarn dev
+```
+
+El servidor quedará expuesto en `http://localhost:3000` con el endpoint `/weather` protegido por micropagos.
+
+## 2. Configurar el MCP Server
+
+### 2.1 Instalar dependencias
+
+```shell
+cd mcp-server
+yarn install
+```
+
+### 2.2 Configurar variables de entorno (opcional para desarrollo)
+
+Para desarrollo local, crea un archivo `.env` en `mcp-server/` basado en `.env.example`:
+
+```env
+PRIVATE_KEY=0x... # Private key de wallet con USDC en Base Sepolia
 PAYMENT_SERVER_URL=http://localhost:3000
 ENDPOINT_PATH=/weather
 ```
 
-- `FACILITATOR` y `PAY_TO` son usados por el servidor Express protegido con pagos.
-- `PRIVATE_KEY`, `PAYMENT_SERVER_URL` y `ENDPOINT_PATH` son consumidos por el servidor MCP.
+**Nota**: Cuando uses Claude Desktop, las variables de entorno se pasan a través de la configuración, no necesitas el archivo `.env`.
 
-## 3. Levantar el servidor de recursos
-
-```shell
-npm run server
-```
-
-El recurso queda expuesto en `http://localhost:3000` y protegido por el middleware de pagos.
-
-## 4. Levantar el servidor MCP
-
-En una nueva terminal, reutilizando las mismas variables de entorno:
+### 2.3 Probar el servidor MCP localmente
 
 ```shell
-npx tsx mcp.ts
+yarn dev
 ```
 
-El servidor MCP usará `PAYMENT_SERVER_URL` y `ENDPOINT_PATH` para consultar el recurso protegido.
+## 3. Registrar el servidor MCP en Claude Desktop
 
-## 5. Registrar el servidor MCP en Claude Code Desktop
-
-Agrega la siguiente entrada en el archivo de configuración de Claude Code Desktop (`claude_desktop_config.json` o equivalente), ajustando las rutas absolutas y valores de entorno según corresponda:
+Agrega la siguiente configuración en `~/Library/Application Support/Claude/claude_desktop_config.json`:
 
 ```json
-  {
-    "mcpServers": {
-      "demo": {
-        "command": "npx",
-        "args": ["-y", "tsx", "mcp.ts"],
-        "cwd": "/Users/gilbertsahumada/projects/mcp-x420",
-        "env": {
-          "PRIVATE_KEY": "<private-key-de-la-wallet>",
-          "PAYMENT_SERVER_URL": "http://localhost:3000",
-          "ENDPOINT_PATH": "/weather"
-        }
+{
+  "mcpServers": {
+    "demo": {
+      "command": "yarn",
+      "args": [
+        "--silent",
+        "--cwd",
+        "/ruta/absoluta/a/mcp-x420/mcp-server",
+        "start"
+      ],
+      "env": {
+        "PRIVATE_KEY": "0x...",
+        "PAYMENT_SERVER_URL": "http://localhost:3000",
+        "ENDPOINT_PATH": "/weather"
       }
     }
   }
+}
 ```
 
-Una vez guardada la configuración, reinicia Claude Code Desktop para que reconozca el nuevo servidor MCP.
+Reemplaza `/ruta/absoluta/a/mcp-x420/mcp-server` con la ruta absoluta a tu carpeta `mcp-server`.
+
+Una vez guardada la configuración, **reinicia Claude Desktop** para que reconozca el nuevo servidor MCP.
+
+## 4. Usar el servidor MCP
+
+En Claude Desktop, ahora tendrás acceso a la herramienta `get-data-from-resource-server` que:
+1. Realiza un micropago automáticamente usando USDC en Base Sepolia
+2. Obtiene los datos del weather endpoint
+3. Retorna la información
+
+## Notas importantes
+
+- Asegúrate de tener USDC en Base Sepolia en la wallet cuya `PRIVATE_KEY` configures
+- El `resource-server` debe estar corriendo en `localhost:3000` para que el MCP server pueda consumirlo
+- Usa `yarn` como package manager (según tus preferencias globales)
 

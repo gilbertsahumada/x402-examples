@@ -36,7 +36,7 @@ server.tool(
     async (_args, _context) => {
         const response = await client.get(endpointPath);
         return {
-            content: [{type: "text", text: JSON.stringify(response.data)}] 
+            content: [{type: "text", text: JSON.stringify(response.data)}]
         }
     }
 );

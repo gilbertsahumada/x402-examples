@@ -29,7 +29,7 @@ yarn install
 
 ### 1.2 Configure environment variables
 
-Create a `.env` file in `resource-server/` based on `.env.example`:
+Create a `.env` file in the `resource-server/` folder based on `resource-server/.env.example`:
 
 ```env
 FACILITATOR=https://facilitator.x402.org
@@ -55,7 +55,7 @@ yarn install
 
 ### 2.2 Configure environment variables (optional for development)
 
-For local development, create a `.env` file in `mcp-server/` based on `.env.example`:
+For local development, create a `.env` file in the `mcp-server/` folder based on `mcp-server/.env.example`:
 
 ```env
 PRIVATE_KEY=0x... # Private key of wallet with USDC on Base Sepolia
